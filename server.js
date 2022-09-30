@@ -57,3 +57,4 @@ app.listen(port, host, () => {
 // ===========================================
 
 app.use('/api/users', require('./routes/user.route.js'));
+app.use('/api/posts', require('./routes/post.route.js'));

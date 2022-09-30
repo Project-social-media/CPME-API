@@ -3,9 +3,7 @@
 // ============================================
 
 const express = require('express');
-const { UserModel } = require('../models/collections/users.model.js');
-// TODO : const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const { PostModel } = require('../models/collections/post.model.js');
 require('dotenv').config();
 
 
@@ -25,10 +23,10 @@ const router = express.Router();
 // ===========================================
 
 
-// Get all user route //
+// Get all posts route //
 
 router.get('/', (_req, res) => {
-    UserModel.find({}, (err, data) => {
+    PostModel.find({}, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -40,10 +38,10 @@ router.get('/', (_req, res) => {
 
 
 
-// Get user by ID route //
+// Get post by ID route //
 
 router.get('/:id', (req, res) => {
-    UserModel.findById(req.params.id, (err, data) => {
+    PostModel.findById(req.params.id, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -55,18 +53,12 @@ router.get('/:id', (req, res) => {
 
 
 
-// Create user route //
+// Create post route //
 
 router.post('/', (req, res) => {
-    const username = req.body.username.toLowerCase();
-    const password = req.body.password;
+    const newPostReq = new PostModel(req.body);
 
-    const newUser = new UserModel({
-        username: username,
-        password: bcrypt.hashSync(password, 10)
-    });
-
-    newUser.save((err, data) => {
+    newPostReq.save((err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -78,16 +70,10 @@ router.post('/', (req, res) => {
 
 
 
-// Update user route //
+// Update post route //
 
 router.put('/:id', (req, res) => {
-    const username = req.body.username.toLowerCase();
-    const password = req.body.password;
-
-    UserModel.findByIdAndUpdate(req.params.id, {
-        username: username,
-        password: bcrypt.hashSync(password, 10)
-    }, (err, data) => {
+    PostModel.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -99,12 +85,10 @@ router.put('/:id', (req, res) => {
 
 
 
-// Delete user route //
+// Delete post route //
 
 router.delete('/:id', (req, res) => {
-    const id = req.params.id;
-
-    UserModel.findByIdAndRemove(id, (err, data) => {
+    PostModel.findByIdAndDelete(req.params.id, (err, data) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -112,6 +96,8 @@ router.delete('/:id', (req, res) => {
         }
     });
 });
+
+
 
 
 
