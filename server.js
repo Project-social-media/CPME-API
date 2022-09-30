@@ -48,3 +48,12 @@ app.use(cors());
 app.listen(port, host, () => {
     console.log(`Server running at http://${host}:${port}/`);
 });
+
+
+
+
+// ===========================================
+// Routes controllers
+// ===========================================
+
+app.use('/api/users', require('./routes/user.route.js'));
