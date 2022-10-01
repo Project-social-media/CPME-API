@@ -6,16 +6,17 @@
 //
 // ==============================================================================================
 
+require('dotenv').config();
 
 // import the twitter library
 const Twitter = require('twitter');
 
 // create a new client
 const client = new Twitter({
-    consumer_key: 'BCOLvF61fT28qrWkRR5dpzkpm',
-    consumer_secret: 'EXzAoAD7JWQMWygGjMQw1uNqfisx7X66IrRsZBL7MyGrLa75bs',
-    access_token_key: '1573964604832681984-vn8gKZt6KomC136qXQjI1qrrfejCCF',
-    access_token_secret: 'WTY4Tgd27DHt7fVSYrhDSwB1QAkpBsVD9vKb4a4nNlcxH'
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 
