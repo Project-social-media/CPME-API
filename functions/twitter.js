@@ -23,7 +23,7 @@ const client = new Twitter({
 function postTweet(tweet) {
     client.post('statuses/update', { status: tweet }, function (error, tweet, response) {
         if (!error) {
-            console.log(tweet);
+            console.log(tweet.id_str);
         } else {
             console.log(error);
         }

@@ -29,18 +29,20 @@ setInterval(() => {
                 const postDate = new Date(post.date).getTime(); // Get post date
                 const postMessage = post.message; // Get post message
                 const postMedia = post.media; // Get post media
+                const [facebook, twitter, instagram, linkedin] = [post.facebook, post.twitter, post.instagram, post.linkedin];
                 if (now >= postDate) {
 
                     // ----------------------------------------
                     // Post on social media
                     // ----------------------------------------
 
-                    if (postMedia == null || postMedia == "") {
-                        postTweet(postMessage); // Post tweet
-                    } else {
-                        postTweetWithPicture(postMessage, postMedia); // Post tweet with picture
+                    if (twitter) {
+                        if (postMedia == null || postMedia == "") {
+                            postTweet(postMessage); // Post tweet
+                        } else {
+                            postTweetWithPicture(postMessage, postMedia); // Post tweet with picture
+                        }
                     }
-
 
                     // ----------------------------------------
                     // Post on social media

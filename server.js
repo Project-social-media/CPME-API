@@ -8,7 +8,7 @@ const cors = require('cors');
 require('./models/databases/db-config');
 require('dotenv').config();
 require('./functions/post');
-
+require('./requests/facebook.request.js');
 
 
 
