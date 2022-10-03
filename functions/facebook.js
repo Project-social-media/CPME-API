@@ -8,7 +8,7 @@ const request = require('request');
 const token = process.env.FACEBOOK_TOKEN;
 const pageId = process.env.FACEBOOK_PAGE_ID;
 
-const serverIp = process.env.SERVER_IP || 'localhost';
+const serverIp = process.env.SERVER_HOST || 'localhost';
 const serverPort = process.env.SERVER_PORT || 3000;
 const serverProtocol = process.env.SERVER_PROTOCOL || 'http';
 
