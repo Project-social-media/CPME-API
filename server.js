@@ -50,11 +50,9 @@ app.listen(port, host, () => {
     console.log(`Server running at http://${host}:${port}/`);
 });
 
-// send testPic.png to the http://localhost:3000/image
-app.get('/image', (req, res) => {
-    res.sendFile(__dirname + '/testPic.png');
+app.get('/image/:name', (req, res) => {
+    res.sendFile(__dirname + '/' + req.params.name);
 });
-
 
 
 
