@@ -50,6 +50,8 @@ app.listen(port, host, () => {
     console.log(`Server running at http://${host}:${port}/`);
 });
 
+
+// Permet de récupérer les images du serveur
 app.get('/image/:name', (req, res) => {
     res.sendFile(__dirname + '/' + req.params.name);
 });

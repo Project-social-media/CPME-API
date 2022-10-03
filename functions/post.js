@@ -2,7 +2,6 @@
 // Import
 // ============================================
 
-const express = require('express');
 const { PostModel } = require('../models/collections/post.model.js');
 const { postTweet, postTweetWithPicture } = require('../functions/twitter.js');
 const { postFacebook, postFacebookWithPicture } = require('../functions/facebook.js');

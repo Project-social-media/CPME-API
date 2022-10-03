@@ -1,15 +1,27 @@
 // ==============================================================================================
 //
 //
-// Description: This is a test file for the twitter API
+// Description: This is a file for the twitter API
 //
 //
 // ==============================================================================================
+
+
+// ============================================
+// Import
+// ============================================
 
 require('dotenv').config();
 
 // import the twitter library
 const Twitter = require('twitter');
+
+
+
+
+// ============================================
+// Variables and Constants
+// ============================================
 
 // create a new client
 const client = new Twitter({
@@ -20,15 +32,21 @@ const client = new Twitter({
 });
 
 
+
+
+
+// ============================================
+// Functions
+// ============================================
+
+
 function postTweet(tweet) {
     client.post('statuses/update', { status: tweet }, function (error, tweet, response) {
-        if (!error) {
-            console.log(tweet.id_str);
-        } else {
-            console.log(error);
-        }
+        !error ? console.log(tweet) : console.log(error);
     });
 }
+
+
 
 function postTweetWithPicture(tweet, picture) {
     var data = require('fs').readFileSync(picture);
