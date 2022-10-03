@@ -53,7 +53,7 @@ app.listen(port, host, () => {
 
 // Permet de récupérer les images du serveur
 app.get('/image/:name', (req, res) => {
-    res.sendFile(__dirname + '/' + req.params.name);
+    res.sendFile(__dirname + process.env.IMAGE_ROOT_PATH + req.params.name);
 });
 
 
