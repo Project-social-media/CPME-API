@@ -40,7 +40,7 @@ const SubmittedPostsModel = new Schema({
 });
 
 
-var SubmittedPostModel = mongoose.model('post', SubmittedPostsModel);
+var SubmittedPostModel = mongoose.model('submittedpost', SubmittedPostsModel);
 
 
 
