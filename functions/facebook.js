@@ -45,17 +45,14 @@ function postFacebook(message) {
             if (!error && response.statusCode == 200) {
                 const data = JSON.parse(body);
 
-                // Save the post to the database
-                const submittedPost = new submittedPostModel({
+                // Save the post to the database without constructor
+                submittedPostModel.create({
                     id: data.id,
                     facebook: true,
-                });
-
-                submittedPost.save().then(() => {
-                    console.log('Facebook post saved to database');
-                }).catch((error) => {
-                    console.log('Error saving Facebook post to database');
-                    console.log(error);
+                }, function (err, post) {
+                    if (err) {
+                        console.log(err);
+                    }
                 });
             
 
