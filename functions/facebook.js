@@ -13,7 +13,7 @@
 
 require('dotenv').config();
 const request = require('request');
-const { submittedPostModel } = require('../models/collections/submittedPost.js');
+const { submittedPostModel, SubmittedPostModel } = require('../models/collections/submittedPost.js');
 
 
 
@@ -45,8 +45,18 @@ function postFacebook(message) {
             if (!error && response.statusCode == 200) {
                 const data = JSON.parse(body);
 
-                // Save the post to the database without constructor
-                submittedPostModel.save(data.id, true, false, false, false);
+                const newSubimittedPost = new SubmittedPostModel({
+                    id: data.id,
+                    facebook: true
+                });
+
+                newSubimittedPost.save((err, data) => {
+                    if (err) {
+                        res.status(500).send(err);
+                    } else {
+                        res.status(200).send(data);
+                    }
+                });
 
 
             } else {
