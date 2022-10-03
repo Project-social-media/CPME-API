@@ -13,6 +13,7 @@
 
 require('dotenv').config();
 const request = require('request');
+const { submittedPostModel } = require('../models/collections/submittedPost');
 
 
 
@@ -41,7 +42,19 @@ function postFacebook(message) {
         `https://graph.facebook.com/v15.0/${pageId}/feed?access_token=${token}`,
         { form: { message: message } },
         function (error, response, body) {
-            !error && response.statusCode == 200 ? console.log(body) : console.log(error);
+            if (!error && response.statusCode == 200) {
+                const data = JSON.parse(body);
+
+                const submittedPost = new submittedPostModel({
+                    id: data.id,
+                    facebook: true
+                });
+                submittedPost.save();
+
+
+            } else {
+                console.log(error);
+            }
         }
     )
 }

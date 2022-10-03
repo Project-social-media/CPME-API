@@ -65,7 +65,7 @@ function postTweetWithPicture(tweet, picture) {
 
             client.post('statuses/update', status, function (error, tweet, response) {
                 if (!error) {
-                    console.log('tweet');
+                    console.log(tweet.id_str);
                 } else {
                     console.log(error);
                 }

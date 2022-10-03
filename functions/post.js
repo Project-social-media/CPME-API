@@ -61,7 +61,7 @@ setInterval(() => {
                         if (err) {
                             console.log(err);
                         } else {
-                            console.log('Post deleted');
+                            console.log('Le post a été supprimé de la base de données');
                         }
                     });
                 }
