@@ -13,7 +13,7 @@
 
 require('dotenv').config();
 const request = require('request');
-const { submittedPostModel } = require('../models/collections/submittedPost');
+const { submittedPostModel } = require('../models/collections/submittedPost.js');
 
 
 
