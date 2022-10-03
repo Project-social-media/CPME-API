@@ -29,9 +29,13 @@ function postFacebook(message) {
 
 function postFacebookWithPicture(message, picture) {
 
+    const url = `${serverProtocol}://${serverIp}:${serverPort}/image/${picture}`;
+
+    console.log(url);
+
     request.post(
         `https://graph.facebook.com/v15.0/${pageId}/photos?access_token=${token}`,
-        { form: { message: message, url: `${serverProtocol}://${serverIp}:${serverPort}/image/${picture}` } },
+        { form: { message: message, url: url } },
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 console.log(body)
