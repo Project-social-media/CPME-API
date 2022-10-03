@@ -8,7 +8,7 @@ const cors = require('cors');
 require('./models/databases/db-config');
 require('dotenv').config();
 require('./functions/post');
-require('./requests/facebook.request.js');
+
 
 
 
@@ -49,6 +49,13 @@ app.use(cors());
 app.listen(port, host, () => {
     console.log(`Server running at http://${host}:${port}/`);
 });
+
+// send testPic.png to the http://localhost:3000/image
+app.get('/image', (req, res) => {
+    res.sendFile(__dirname + '/testPic.png');
+});
+
+
 
 
 

@@ -5,6 +5,7 @@
 const express = require('express');
 const { PostModel } = require('../models/collections/post.model.js');
 const { postTweet, postTweetWithPicture } = require('../functions/twitter.js');
+const { postFacebook, postFacebookWithPicture } = require('../functions/facebook.js');
 require('dotenv').config();
 
 
@@ -43,6 +44,15 @@ setInterval(() => {
                             postTweetWithPicture(postMessage, postMedia); // Post tweet with picture
                         }
                     }
+
+                    if (facebook) {
+                        if (postMedia == null || postMedia == "") {
+                            postFacebook(postMessage); // Post on Facebook
+                        } else {
+                            postFacebookWithPicture(postMessage, postMedia); // Post on Facebook with picture
+                        }
+                    }
+
 
                     // ----------------------------------------
                     // Post on social media

@@ -1,23 +1,23 @@
-// {
-//     "files.exclude": {
-//         "node_modules": true,
-//         ".angular": true,
-//         ".git": true,
-//         ".gitignore": true,
-//         ".gitattributes": true,
-//         ".gitmodules": true,
-//         ".DS_Store": true,
-//         "*.log": true,
-//         "*.md": true,
-//         "*.json": true,
-//         ".editorconfig": true,
-//         ".browserslistrc": true,
-//         "src/polyfills.ts": true,
-//         "src/favicon.ico": true,
-//         "src/test.ts": true,
-//         "src/environments": true,
-//     },
-//     "editor.tokenColorCustomizations": {
-//         "comments": "#d4922f"
-//     },
-// }
+{
+    "files.exclude": {
+        "node_modules": true,
+        ".angular": true,
+        ".git": true,
+        ".gitignore": true,
+        ".gitattributes": true,
+        ".gitmodules": true,
+        ".DS_Store": true,
+        "*.log": true,
+        "*.md": true,
+        "*.json": true,
+        ".editorconfig": true,
+        ".browserslistrc": true,
+        "src/polyfills.ts": true,
+        "src/favicon.ico": true,
+        "src/test.ts": true,
+        "src/environments": true,
+    },
+    "editor.tokenColorCustomizations": {
+        "comments": "#d4922f"
+    },
+}
