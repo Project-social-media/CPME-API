@@ -46,15 +46,7 @@ function postFacebook(message) {
                 const data = JSON.parse(body);
 
                 // Save the post to the database without constructor
-                submittedPostModel.create({
-                    id: data.id,
-                    facebook: true,
-                }, function (err, post) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-            
+                submittedPostModel.save(data.id, true, false, false, false);
 
 
             } else {
