@@ -25,6 +25,13 @@ const token = process.env.LINKEDIN_TOKEN;
 const authorID = process.env.LINKEDIN_AUTHOR_ID;
 
 
+
+
+// ============================================
+// Functions
+// ============================================
+
+
 // Post a message on linkedin with oauth2 token and body as json object
 function postLinkedinWithBody(message) {
 
