@@ -25,10 +25,13 @@ const token = process.env.INSTAGRAM_TOKEN;
 const pageId = process.env.INSTAGRAM_PAGE_ID;
 
 
-function postInstagram(message) {
+function postInstagram(message, picture) {
+
+    const url = `${serverProtocol}://${serverIp}:${serverPort}/image/${picture}`;
+
     request.post(
         `https://graph.facebook.com/v15.0/${pageId}/media?access_token=${token}&caption=${message}`,
-        { form: { image_url: 'https://image.shutterstock.com/image-photo/jpeg-joint-photographic-experts-group-260nw-1938437788.jpg' } },
+        { form: { image_url: url } },
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 const id = JSON.parse(body).id;
