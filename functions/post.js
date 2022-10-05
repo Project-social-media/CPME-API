@@ -5,6 +5,8 @@
 const { PostModel } = require('../models/collections/post.model.js');
 const { postTweet, postTweetWithPicture } = require('../functions/twitter.js');
 const { postFacebook, postFacebookWithPicture } = require('../functions/facebook.js');
+const { postInstagram } = require('../functions/instagram');
+const { postLinkedin } = require('../functions/linkedin');
 require('dotenv').config();
 
 
@@ -52,6 +54,19 @@ setInterval(() => {
                         }
                     }
 
+                    if (instagram) {
+                        if (postMedia != null || postMedia != "") {
+                            postInstagram(postMessage); // Post on Instagram
+                        }
+                    }
+
+                    if (linkedin) {
+                        if (postMedia == null || postMedia == "") {
+                            postLinkedin(postMessage); // Post on Linkedin
+                        } else {
+                            // TODO : Post on Linkedin with picture
+                        }
+                    }
 
                     // ----------------------------------------
                     // Post on social media
