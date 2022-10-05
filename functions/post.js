@@ -56,7 +56,7 @@ setInterval(() => {
 
                     if (instagram) {
                         if (postMedia != null || postMedia != "") {
-                            postInstagram(postMessage); // Post on Instagram
+                            postInstagram(postMessage, postMedia); // Post on Instagram
                         }
                     }
 
