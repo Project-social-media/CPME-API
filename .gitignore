@@ -23,6 +23,13 @@ lib-cov
 coverage
 *.lcov
 
+# Git
+.gitingore
+.gitattributes
+
+# Package managers
+package-lock.json
+
 # nyc test coverage
 .nyc_output
 
