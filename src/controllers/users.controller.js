@@ -37,6 +37,16 @@ exports.getById = async (req, res) => {
 	}
 };
 
+// Get a user with username
+exports.getByUsername = async (req, res) => {
+	try {
+		const user = await userModel.model.findOne({ username: req.params.username });
+		res.json(user);
+	} catch (err) {
+		res.status(500).json({ message: err.message });
+	}
+};
+
 // Create a new user
 exports.create = async (req, res) => {
 	const user = new userModel.model({

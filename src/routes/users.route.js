@@ -11,7 +11,7 @@ module.exports = (app) => {
 	const usersController = require(`${appRoot}/src/controllers/users.controller`);
 	const router = imp.express.Router();
 
-	const test = require(`${appRoot}/src/scripts/test`);
+	const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
 
 	//
 	//
@@ -22,10 +22,13 @@ module.exports = (app) => {
 	//
 
 	// Retrieve all users
-	router.get('/', test, usersController.getAll);
+	router.get('/', authentificationController.authRequest, usersController.getAll);
 
 	// Retrieve a single user with id
 	router.get('/:id', usersController.getById);
+
+	// Retrieve a single user with username
+	router.get('/username/:username', usersController.getByUsername);
 
 	// Create a new user
 	router.post('/create', usersController.create);

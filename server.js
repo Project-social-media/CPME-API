@@ -20,7 +20,7 @@ global.appRoot = path.resolve(__dirname);
 //
 //
 
-require(`${appRoot}/src/scripts/autoPost`);
+// require(`${appRoot}/src/scripts/autoPost`);
 require('./src/config/databases/mongodb.config');
 require('dotenv').config();
 
@@ -89,3 +89,4 @@ module.exports = { express };
 
 require('./src/routes/users.route')(app);
 require('./src/routes/posts.route')(app);
+require('./src/routes/authentification.route')(app);
