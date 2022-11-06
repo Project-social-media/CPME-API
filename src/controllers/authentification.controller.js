@@ -29,7 +29,6 @@ exports.login = async (req, res) => {
 			if (await bcrypt.compare(req.body.password, user.password)) {
 				// Create token with lifespan of 1 hour
 				const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-				console.log(accessToken);
 				res.json({ accessToken: accessToken });
 			} else {
 				res.send('Not Allowed');
@@ -43,15 +42,11 @@ exports.login = async (req, res) => {
 };
 
 exports.checkToken = async (req, res, next) => {
-	const authHeader = req.headers['authorization'];
-	const token = authHeader && authHeader.split(' ')[1];
-
+	const token = req.body.token;
 	if (token == null) return res.sendStatus(401);
 
 	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-		if (err) return res.sendStatus(403);
-		res.json(user);
-		next();
+		res.json({ valid: err ? false : true });
 	});
 };
 

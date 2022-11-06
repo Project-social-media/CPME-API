@@ -23,7 +23,7 @@ module.exports = (app) => {
 	router.post('/login', authentificationController.login);
 
 	// Check token
-	router.get('/checkToken', authentificationController.checkToken);
+	router.post('/check-token', authentificationController.checkToken);
 
 	app.use('/api/auth', router);
 };
