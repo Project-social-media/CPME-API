@@ -21,7 +21,4 @@ const authentificationController = require(`${appRoot}/src/controllers/authentif
 // Login user
 router.post('/login', authentificationController.login);
 
-// Check token
-router.post('/check-token', authentificationController.checkToken);
-
 module.exports = router;

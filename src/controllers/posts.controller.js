@@ -7,6 +7,7 @@
 //
 
 const postModel = require(`${appRoot}/src/models/mongoDB/posts.model`);
+const sendError = require(`${appRoot}/src/scripts/send-error`);
 
 //
 //
@@ -20,9 +21,9 @@ const postModel = require(`${appRoot}/src/models/mongoDB/posts.model`);
 exports.getAll = async (_req, res) => {
 	try {
 		const posts = await postModel.model.find();
-		res.json(posts);
+		return res.json(posts);
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		return sendError(_req, res, 500, err.message);
 	}
 };
 
@@ -32,7 +33,7 @@ exports.getById = async (req, res) => {
 		const post = await postModel.model.findById(req.params.id);
 		res.json(post);
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		return sendError(req, res, 500, err.message);
 	}
 };
 
@@ -41,9 +42,9 @@ exports.create = async (req, res) => {
 	const post = new postModel.model(req.body);
 	try {
 		const newPost = await post.save();
-		res.status(201).json(newPost);
+		return res.status(201).json(newPost);
 	} catch (err) {
-		res.status(400).json({ message: err.message });
+		return sendError(req, res, 400, err.message);
 	}
 };
 
@@ -51,14 +52,12 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
 	try {
 		postModel.model.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, post) => {
-			if (err) {
-				res.status(500).json({ message: err.message });
-			} else {
-				res.status(200).json(post);
-			}
+			if (err) return sendError(req, res, 500, err.message);
+
+			return res.status(200).json(post);
 		});
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		return sendError(req, res, 500, err.message);
 	}
 };
 
@@ -66,8 +65,8 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
 	try {
 		await postModel.model.findByIdAndDelete(req.params.id);
-		res.json({ message: 'Post deleted' });
+		return res.json({ message: 'Post deleted' });
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		return sendError(req, res, 500, err.message);
 	}
 };

@@ -9,6 +9,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require(`${appRoot}/src/models/mongoDB/users.model`);
+const sendError = require(`${appRoot}/src/scripts/send-error`);
 
 //
 //
@@ -18,46 +19,38 @@ const userModel = require(`${appRoot}/src/models/mongoDB/users.model`);
 //
 //
 
-// Get all post
+/* A function that is called when a user logs in. It checks if the user exists and if the
+password is correct. If it is correct, it creates a token and sends it to the user. */
 exports.login = async (req, res) => {
 	try {
 		const user = await userModel.model.findOne({ username: req.body.username });
 
-		if (user == null) return res.status(400).send('Cannot find user');
+		if (user == null) return sendError(req, res, 400, 'Wrong username or password');
 
 		try {
-			if (await bcrypt.compare(req.body.password, user.password)) {
-				// Create token with lifespan of 1 hour
-				const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-				res.json({ accessToken: accessToken });
-			} else {
-				res.send('Not Allowed');
-			}
+			if (!bcrypt.compare(req.body.password, user.password)) return sendError(req, res, 400, 'Wrong username or password');
+
+			const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+			return res.json({ accessToken: accessToken });
 		} catch {
-			res.status(500).send();
+			return sendError(req, res, 500, err.message);
 		}
 	} catch (err) {
-		res.status(500).json({ message: err.message });
+		return sendError(req, res, 500, err.message);
 	}
 };
 
-exports.checkToken = async (req, res, next) => {
-	const token = req.body.token;
-	if (token == null) return res.sendStatus(401);
-
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-		res.json({ valid: err ? false : true });
-	});
-};
-
+/* A middleware function that checks if the user is logged in. */
 exports.authRequest = async (req, res, next) => {
 	const authHeader = req.headers['authorization'];
 	const token = authHeader && authHeader.split(' ')[1];
 
-	if (token == null) return res.sendStatus(401);
+	if (token == null) return sendError(req, res, 401, 'No token provided');
 
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-		if (err) return res.sendStatus(403);
+	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
+		//
+		if (err) return sendError(req, res, 403, 'Forbidden');
 		next();
+		//
 	});
 };
