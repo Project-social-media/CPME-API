@@ -60,6 +60,22 @@ app.use(cors());
 //
 //
 // --------------------------------------------
+// Routes controllers
+// --------------------------------------------
+//
+//
+
+const usersRoute = require(`${appRoot}/src/routes/users.route`);
+const authentificationRoute = require(`${appRoot}/src/routes/authentification.route`);
+const postsRoute = require(`${appRoot}/src/routes/posts.route`);
+
+app.use('/api/users', usersRoute);
+app.use('/api/auth', authentificationRoute);
+app.use('/api/posts', postsRoute);
+
+//
+//
+// --------------------------------------------
 // Server listening
 // --------------------------------------------
 //
@@ -68,25 +84,3 @@ app.use(cors());
 app.listen(port, host, () => {
 	console.log(`Server running at http://${host}:${port}/`);
 });
-
-//
-//
-// --------------------------------------------
-// Export
-// --------------------------------------------
-//
-//
-
-module.exports = { express };
-
-//
-//
-// --------------------------------------------
-// Routes controllers
-// --------------------------------------------
-//
-//
-
-require('./src/routes/users.route')(app);
-require('./src/routes/posts.route')(app);
-require('./src/routes/authentification.route')(app);

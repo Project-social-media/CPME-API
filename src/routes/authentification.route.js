@@ -1,29 +1,27 @@
-module.exports = (app) => {
-	//
-	//
-	// --------------------------------------------
-	// Require
-	// --------------------------------------------
-	//
-	//
+//
+//
+// --------------------------------------------
+// Require
+// --------------------------------------------
+//
+//
 
-	const imp = require(`${appRoot}/server`);
-	const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
-	const router = imp.express.Router();
+const express = require('express');
+const router = express.Router();
+const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
 
-	//
-	//
-	// --------------------------------------------
-	// Routes
-	// --------------------------------------------
-	//
-	//
+//
+//
+// --------------------------------------------
+// Routes
+// --------------------------------------------
+//
+//
 
-	// Login user
-	router.post('/login', authentificationController.login);
+// Login user
+router.post('/login', authentificationController.login);
 
-	// Check token
-	router.post('/check-token', authentificationController.checkToken);
+// Check token
+router.post('/check-token', authentificationController.checkToken);
 
-	app.use('/api/auth', router);
-};
+module.exports = router;

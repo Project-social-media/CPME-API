@@ -1,38 +1,36 @@
-module.exports = (app) => {
-	//
-	//
-	// --------------------------------------------
-	// Require
-	// --------------------------------------------
-	//
-	//
+//
+//
+// --------------------------------------------
+// Require
+// --------------------------------------------
+//
+//
 
-	const imp = require(`${appRoot}/server`);
-	const postsController = require(`${appRoot}/src/controllers/posts.controller`);
-	const router = imp.express.Router();
+const express = require('express');
+const router = express.Router();
+const postsController = require(`${appRoot}/src/controllers/posts.controller`);
 
-	//
-	//
-	// --------------------------------------------
-	// Routes
-	// --------------------------------------------
-	//
-	//
+//
+//
+// --------------------------------------------
+// Routes
+// --------------------------------------------
+//
+//
 
-	// Retrieve all users
-	router.get('/', postsController.getAll);
+// Retrieve all users
+router.get('/', postsController.getAll);
 
-	// Retrieve a single user with id
-	router.get('/:id', postsController.getById);
+// Retrieve a single user with id
+router.get('/:id', postsController.getById);
 
-	// Create a new user
-	router.post('/create', postsController.create);
+// Create a new user
+router.post('/create', postsController.create);
 
-	// Update a user with id
-	router.put('/update/:id', postsController.update);
+// Update a user with id
+router.put('/update/:id', postsController.update);
 
-	// Delete a user with id
-	router.delete('/delete/:id', postsController.delete);
+// Delete a user with id
+router.delete('/delete/:id', postsController.delete);
 
-	app.use('/api/posts', router);
-};
+module.exports = router;
