@@ -7,8 +7,8 @@
 //
 
 const post = require(`${appRoot}/src/models/mongoDB/posts.model`);
-const { postFacebook, postFacebookWithPicture } = require(`${appRoot}/src/scripts/facebookAPI`);
-const { postTweet, postTweetWithPicture } = require(`${appRoot}/src/scripts/twitter`);
+const { postFacebook, postFacebookWithPicture } = require(`${appRoot}/src/scripts/facebook-api`);
+const { postTweet, postTweetWithPicture } = require(`${appRoot}/src/scripts/twitter-api`);
 require('dotenv').config();
 
 //
