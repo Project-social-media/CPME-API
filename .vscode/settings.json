@@ -23,5 +23,6 @@
 		"comments": "#414141"
 	},
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"javascript.suggestionActions.enabled": false
 }
