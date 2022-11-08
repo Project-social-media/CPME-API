@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
 		try {
 			if (!bcrypt.compare(req.body.password, user.password)) return sendError(req, res, 400, 'Wrong username or password');
 
-			const accessToken = jwt.sign(user._id.toString(), process.env.ACCESS_TOKEN_SECRET);
+			const accessToken = jwt.sign(user._id.toString(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
 			return res.json({ accessToken: accessToken });
 		} catch (err) {
 			return sendError(req, res, 500, err.message);
