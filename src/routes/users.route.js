@@ -8,7 +8,6 @@
 
 const express = require('express');
 const router = express.Router();
-const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
 const usersController = require(`${appRoot}/src/controllers/users.controller`);
 
 //
@@ -20,13 +19,13 @@ const usersController = require(`${appRoot}/src/controllers/users.controller`);
 //
 
 // Retrieve all users
-router.get('/', authentificationController.authRequest, usersController.getAll);
+router.get('/', usersController.getAll);
 
 // Retrieve a single user with id
-router.get('/:id', usersController.getById);
+router.get('/id/:id', usersController.getById);
 
-// Retrieve a single user with username
-router.get('/username/:username', usersController.getByUsername);
+// Get user from jwt token
+router.get('/getByIdInJwtToken', usersController.getByIdInJwtToken);
 
 // Create a new user
 router.post('/create', usersController.create);

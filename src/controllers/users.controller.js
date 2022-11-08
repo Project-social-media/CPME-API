@@ -9,6 +9,7 @@
 const bcrypt = require('bcrypt');
 const userModel = require(`${appRoot}/src/models/mongoDB/users.model`);
 const sendError = require(`${appRoot}/src/scripts/send-error`);
+const jwt = require('jsonwebtoken');
 
 //
 //
@@ -38,10 +39,11 @@ exports.getById = async (req, res) => {
 	}
 };
 
-// Get a user with username
-exports.getByUsername = async (req, res) => {
+exports.getByIdInJwtToken = async (req, res, next) => {
+	const token = req.headers['authorization'].split(' ')[1];
+	const userId = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 	try {
-		const user = await userModel.model.findOne({ username: req.params.username });
+		const user = await userModel.model.findById(userId);
 		return res.json(user);
 	} catch (err) {
 		return sendError(req, res, 500, err.message);

@@ -12,6 +12,8 @@ const cors = require('cors');
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
+const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
+
 //
 //
 // --------------------------------------------
@@ -69,9 +71,9 @@ const usersRoute = require(`${appRoot}/src/routes/users.route`);
 const authentificationRoute = require(`${appRoot}/src/routes/authentification.route`);
 const postsRoute = require(`${appRoot}/src/routes/posts.route`);
 
-app.use('/api/users', usersRoute);
+app.use('/api/users', authentificationController.authRequest, usersRoute);
 app.use('/api/auth', authentificationRoute);
-app.use('/api/posts', postsRoute);
+app.use('/api/posts', authentificationController.authRequest, postsRoute);
 
 //
 //

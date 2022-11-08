@@ -24,15 +24,14 @@ password is correct. If it is correct, it creates a token and sends it to the us
 exports.login = async (req, res) => {
 	try {
 		const user = await userModel.model.findOne({ username: req.body.username });
-
 		if (user == null) return sendError(req, res, 400, 'Wrong username or password');
 
 		try {
 			if (!bcrypt.compare(req.body.password, user.password)) return sendError(req, res, 400, 'Wrong username or password');
 
-			const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+			const accessToken = jwt.sign(user._id.toString(), process.env.ACCESS_TOKEN_SECRET);
 			return res.json({ accessToken: accessToken });
-		} catch {
+		} catch (err) {
 			return sendError(req, res, 500, err.message);
 		}
 	} catch (err) {
