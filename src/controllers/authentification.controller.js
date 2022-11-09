@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
 		try {
 			if (!bcrypt.compare(req.body.password, user.password)) return sendError(req, res, 400, 'Wrong username or password');
 
-			const accessToken = jwt.sign(user._id.toString(), process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
+			const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 			return res.json({ accessToken: accessToken });
 		} catch (err) {
 			return sendError(req, res, 500, err.message);
@@ -41,15 +41,19 @@ exports.login = async (req, res) => {
 
 /* A middleware function that checks if the user is logged in. */
 exports.authRequest = async (req, res, next) => {
-	const authHeader = req.headers['authorization'];
-	const token = authHeader && authHeader.split(' ')[1];
+	try {
+		const authHeader = req.headers['authorization'];
+		const token = authHeader && authHeader.split(' ')[1];
 
-	if (token == null) return sendError(req, res, 401, 'No token provided');
+		if (token == null) return sendError(req, res, 401, 'No token provided');
 
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
-		//
-		if (err) return sendError(req, res, 403, 'Forbidden');
-		next();
-		//
-	});
+		jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
+			//
+			if (err) return sendError(req, res, 403, err);
+			next();
+			//
+		});
+	} catch (err) {
+		return sendError(req, res, 500, err.message);
+	}
 };

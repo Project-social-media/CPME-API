@@ -40,9 +40,9 @@ exports.getById = async (req, res) => {
 };
 
 exports.getByIdInJwtToken = async (req, res, next) => {
-	const token = req.headers['authorization'].split(' ')[1];
-	const userId = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 	try {
+		const token = req.headers['authorization'].split(' ')[1];
+		const userId = jwt.decode(token).id;
 		const user = await userModel.model.findById(userId);
 		return res.json(user);
 	} catch (err) {
