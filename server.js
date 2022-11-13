@@ -25,6 +25,7 @@ const authentificationController = require(`${appRoot}/src/controllers/authentif
 // require(`${appRoot}/src/scripts/autoPost`);
 require('./src/config/databases/mongodb.config');
 require('dotenv').config();
+// require('./src/scripts/auto-post');
 
 //
 //
