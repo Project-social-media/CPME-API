@@ -10,7 +10,6 @@ require('dotenv').config();
 
 // import the twitter library
 const Twitter = require('twitter');
-const dateFormat = require('date-format');
 const archiveModel = require(`${appRoot}/src/models/mongoDB/archives.model`);
 
 //
@@ -74,21 +73,6 @@ function postTweetWithPicture(tweet, picture) {
 		});
 	});
 }
-
-function getTweetStats(idTweet) {
-
-	client.get(`https://api.twitter.com/1.1/statuses/show/${idTweet}.json`, function (error, tweet, response) {
-		if (error) return console.log(error);
-
-		console.log("Nombre de retweets :", tweet.retweet_count);
-		console.log("Nombre de likes :", tweet.user.favourites_count);
-		console.log("Nombre de commentaires :", tweet.user.listed_count);
-		console.log("Date de création :", tweet.created_at);
-
-		console.log(dateFormat(new Date(), "ddd mmm dd yyyy HH:MM:ss UTC"));
-	});
-}
-
 //
 //
 // --------------------------------------------
@@ -97,4 +81,4 @@ function getTweetStats(idTweet) {
 //
 //
 
-module.exports = { postTweet, postTweetWithPicture, getTweetStats };
+module.exports = { postTweet, postTweetWithPicture };

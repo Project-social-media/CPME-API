@@ -11,8 +11,6 @@ const cors = require('cors');
 
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
-var { getTweetStats } = require(`${appRoot}/src/scripts/twitter-api.js`);
-
 const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
 
 //
@@ -72,10 +70,12 @@ app.use(cors());
 const usersRoute = require(`${appRoot}/src/routes/users.route`);
 const authentificationRoute = require(`${appRoot}/src/routes/authentification.route`);
 const postsRoute = require(`${appRoot}/src/routes/posts.route`);
+const statsRoute = require(`${appRoot}/src/routes/stats.route`);
 
 app.use('/api/users', authentificationController.authRequest, usersRoute);
 app.use('/api/auth', authentificationRoute);
 app.use('/api/posts', authentificationController.authRequest, postsRoute);
+app.use('/api/stats', statsRoute);
 
 //
 //
@@ -88,5 +88,3 @@ app.use('/api/posts', authentificationController.authRequest, postsRoute);
 app.listen(port, host, () => {
 	console.log(`Server running at http://${host}:${port}/`);
 });
-
-getTweetStats('1592958929197113344');
