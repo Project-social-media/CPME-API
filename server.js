@@ -11,6 +11,7 @@ const cors = require('cors');
 
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
+var { getTweetStats } = require(`${appRoot}/src/scripts/twitter-api.js`);
 
 const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
 
@@ -87,3 +88,5 @@ app.use('/api/posts', authentificationController.authRequest, postsRoute);
 app.listen(port, host, () => {
 	console.log(`Server running at http://${host}:${port}/`);
 });
+
+getTweetStats('1592958929197113344');
