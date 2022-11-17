@@ -50,7 +50,19 @@ var archiveSchema = new mongoDb.mongoose.Schema({
 		required: false,
 		default: false,
 	},
-	idMessagePost: {
+	idMessageFacebook: {
+		type: String,
+		required: false,
+	},
+	idMessageTwitter: {
+		type: String,
+		required: false,
+	},
+	idMessageInstagram: {
+		type: String,
+		required: false,
+	},
+	idMessageLinkedin: {
 		type: String,
 		required: false,
 	},
@@ -61,7 +73,7 @@ var archiveSchema = new mongoDb.mongoose.Schema({
 	},
 });
 
-var model = mongoDb.mongoose.model('posts', archiveSchema);
+var model = mongoDb.mongoose.model('archives', archiveSchema);
 
 //
 //

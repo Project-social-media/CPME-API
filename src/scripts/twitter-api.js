@@ -10,6 +10,7 @@ require('dotenv').config();
 
 // import the twitter library
 const Twitter = require('twitter');
+const archiveModel = require(`${appRoot}/src/models/mongoDB/archives.model`);
 
 //
 //
@@ -35,9 +36,22 @@ const client = new Twitter({
 //
 //
 
-function postTweet(tweet) {
+function postTweet(tweet, id) {
 	client.post('statuses/update', { status: tweet }, function (error, tweet, response) {
-		!error ? console.log(tweet) : console.log(error);
+		//
+		// 🚨 SYSTEME A REVOIR
+		//
+
+		// Update archive with id and add facebook id
+		archiveModel.model.findByIdAndUpdate(id, { twitter: true, idMessageTwitter: tweet.id_str }, (err, data) => {
+			if (err) return console.log(err);
+		});
+
+		//
+		// 🚨 SYSTEME A REVOIR
+		//
+
+		!error ? console.log('tweet') : console.log(error);
 	});
 }
 
@@ -55,7 +69,7 @@ function postTweetWithPicture(tweet, picture) {
 		};
 
 		client.post('statuses/update', status, function (error, tweet, response) {
-			error ? console.log(error) : console.log(tweet.id_str);
+			error ? console.log(error) : console.log('tweet.id_str');
 		});
 	});
 }

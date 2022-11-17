@@ -40,11 +40,12 @@ exports.getById = async (req, res) => {
 // Create a new post
 exports.create = async (req, res) => {
 	const archives = new archiveModel.model(req.body);
+
 	try {
 		const newArchive = await archives.save();
 		return res.status(201).json(newArchive);
 	} catch (err) {
-		return sendError(req, res, 400, err.message);
+		return console.log(err);
 	}
 };
 
@@ -57,7 +58,7 @@ exports.update = async (req, res) => {
 			return res.status(200).json(archive);
 		});
 	} catch (err) {
-		return sendError(req, res, 500, err.message);
+		return console.log(err);
 	}
 };
 
