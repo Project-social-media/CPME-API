@@ -48,7 +48,7 @@ function postFacebook(message, id) {
 		const postId = bodyJson.id;
 
 		// Update archive with id and add facebook id
-		archiveModel.model.findByIdAndUpdate(id, { facebook: true, idMessageFacebook: postId }, (err, data) => {
+		archiveModel.model.findByIdAndUpdate(id, { idMessageFacebook: postId }, (err, data) => {
 			if (err) return console.log(err);
 		});
 

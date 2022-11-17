@@ -30,26 +30,6 @@ var archiveSchema = new mongoDb.mongoose.Schema({
 		required: false,
 		default: Date.now,
 	},
-	facebook: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
-	twitter: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
-	instagram: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
-	linkedin: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
 	idMessageFacebook: {
 		type: String,
 		required: false,
@@ -65,11 +45,6 @@ var archiveSchema = new mongoDb.mongoose.Schema({
 	idMessageLinkedin: {
 		type: String,
 		required: false,
-	},
-	state: {
-		type: String,
-		required: false,
-		default: 'Archived',
 	},
 });
 

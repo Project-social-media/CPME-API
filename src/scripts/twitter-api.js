@@ -43,7 +43,7 @@ function postTweet(tweet, id) {
 		//
 
 		// Update archive with id and add facebook id
-		archiveModel.model.findByIdAndUpdate(id, { twitter: true, idMessageTwitter: tweet.id_str }, (err, data) => {
+		archiveModel.model.findByIdAndUpdate(id, { idMessageTwitter: tweet.id_str }, (err, data) => {
 			if (err) return console.log(err);
 		});
 
