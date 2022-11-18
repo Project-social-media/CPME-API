@@ -16,6 +16,12 @@ const client = new Twitter({
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 });
 
+const request = require('request');
+
+const facebook = process.env.FACEBOOK_TOKEN;
+const facebookPostStats = "?fields=reactions.summary(true),comments.summary(true)";
+const facebookPageStats = "insights/page_impressions,page_fan_adds_unique";
+
 //
 //
 // --------------------------------------------
@@ -60,5 +66,51 @@ function getTwittos(idUser) {
         if (error) return console.log(error);
         console.log(user);
         return user;
+    });
+}
+
+//
+//
+// --------------------------------------------
+// Facebook controllers
+// --------------------------------------------
+//
+//
+
+exports.getFacebookPostStats = async (req, res) => {
+    try {
+        const post = await getFacebookPost(req.params.id_post);
+        res.send(post);
+    } catch (err) {
+        return sendError(req, res, 500, err.message);
+    }
+}
+
+exports.getFacebookPageStats = async (req, res) => {
+    try {
+        const page = await getFacebookPage(req.params.id_page);
+        res.send(page);
+    } catch (err) {
+        return sendError(req, res, 500, err.message);
+    }
+}
+
+
+
+function getFacebookPost(idFacebookPost) {
+    request.get(`https://graph.facebook.com/${idFacebookPost}${facebookPostStats}&access_token=${facebook}`, function (error, post, response) {
+        if (error) return console.log(error);
+        console.log(JSON.parse(post.body));
+        return post;
+    });
+}
+
+function getFacebookPage() {
+    const idFacebookPage = '100545269503535';
+
+    request.get(`https://graph.facebook.com/${idFacebookPage}/${facebookPageStats}?access_token=${facebook}`, function (error, page, response) {
+        if (error) return console.log(error);
+        console.log(JSON.parse(page.body));
+        return page;
     });
 }
