@@ -7,6 +7,8 @@
 //
 
 const Twitter = require('twitter');
+const FB = require('fb');
+
 const sendError = require(`${appRoot}/src/scripts/send-error`);
 
 const client = new Twitter({
@@ -16,11 +18,13 @@ const client = new Twitter({
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 });
 
-const request = require('request');
-
 const facebook = process.env.FACEBOOK_TOKEN;
-const facebookPostStats = "?fields=reactions.summary(true),comments.summary(true)";
-const facebookPageStats = "insights/page_impressions,page_fan_adds_unique";
+const facebookPostStats = "reactions.summary(true),comments.summary(true)";
+const facebookPageStats = "100545269503535/insights/page_impressions,page_fan_adds_unique";
+
+const instagramPageId = "17841455333376057";
+const instagramPostStats = "caption,comments_count,like_count,media_type,permalink,timestamp,username";
+const instagramPageStats = "business_discovery.username(bluebottle){followers_count,media_count}";
 
 //
 //
@@ -32,8 +36,10 @@ const facebookPageStats = "insights/page_impressions,page_fan_adds_unique";
 
 exports.getTweetStats = async (req, res) => {
     try {
-        const tweet = await getTweet(req.params.id_tweet);
-        res.send(tweet);
+        const tweetData = await getTweet(req.params.id_tweet);
+        if (!tweetData) return res.status(404).json({ message: "Tweet not found" });
+        return res.status(200).json(tweetData);
+
     } catch (err) {
         return sendError(req, res, 500, err.message);
     }
@@ -41,32 +47,24 @@ exports.getTweetStats = async (req, res) => {
 
 exports.getTwittosStats = async (req, res) => {
     try {
-        const tempId = req.params.id_user;
-        const idUser = tempId.toString();
-        const twittos = await getTwittos(idUser);
-        res.send(twittos);
+        const twittosData = await getTwittos(req.params.id_user);
+        if (!twittosData) return res.status(404).json({ message: "Twittos not found" });
+        return res.status(200).json(twittosData);
+
     } catch (err) {
         return sendError(req, res, 500, err.message);
     }
 }
 
-function getTweet(idTweet) {
-
-    client.get(`statuses/show/${idTweet}.json`, function (error, tweet, response) {
-        if (error) return console.log(error);
-        console.log(tweet);
-        return tweet;
-    });
+async function getTweet(idTweet) {
+    let res = await client.get(`statuses/show/${idTweet}.json`, {});
+    return res;
 }
 
 
-function getTwittos(idUser) {
-
-    client.get(`https://api.twitter.com/1.1/users/show.json?user_id=${idUser}`, function (error, user, response) {
-        if (error) return console.log(error);
-        console.log(user);
-        return user;
-    });
+async function getTwittos(idUser) {
+    let res = await client.get(`statuses/user_timeline/${idUser}.json`, {});
+    return res;
 }
 
 //
@@ -79,8 +77,10 @@ function getTwittos(idUser) {
 
 exports.getFacebookPostStats = async (req, res) => {
     try {
-        const post = await getFacebookPost(req.params.id_post);
-        res.send(post);
+        const postStats = await getFacebookPost(req.params.id_post);
+        if (!postStats) return res.status(404).json({ message: "Post not found" });
+        return res.status(200).json(postStats);
+
     } catch (err) {
         return sendError(req, res, 500, err.message);
     }
@@ -88,29 +88,62 @@ exports.getFacebookPostStats = async (req, res) => {
 
 exports.getFacebookPageStats = async (req, res) => {
     try {
-        const page = await getFacebookPage(req.params.id_page);
-        res.send(page);
+        const pageStats = await getFacebookPage();
+        if (!pageStats) return res.status(404).json({ message: "Page not found" });
+        return res.status(200).json(pageStats);
+
+    } catch (err) {
+        return sendError(req, res, 500, err.message);
+    }
+}
+
+async function getFacebookPost(idFacebookPost) {
+    let res = await FB.api(idFacebookPost, 'GET', { "fields": facebookPostStats, "access_token": facebook });
+    return res;
+}
+
+async function getFacebookPage() {
+    let res = await FB.api(facebookPageStats, 'GET', { "access_token": facebook });
+    return res;
+}
+//
+//
+// --------------------------------------------
+// Instagram controllers
+// --------------------------------------------
+//
+//
+
+exports.getInstagramPostStats = async (req, res) => {
+    try {
+        const postStats = await getInstagramPost(req.params.id_post);
+        if (!postStats) return res.status(404).json({ message: "Post not found" });
+        return res.status(200).json(postStats);
+
+    } catch (err) {
+        return sendError(req, res, 500, err.message);
+    }
+}
+
+exports.getInstagramPageStats = async (req, res) => {
+    try {
+        const pageStats = await getInstagramPage();
+        if (!pageStats) return res.status(404).json({ message: "Page not found" });
+        return res.status(200).json(pageStats);
+
     } catch (err) {
         return sendError(req, res, 500, err.message);
     }
 }
 
 
-
-function getFacebookPost(idFacebookPost) {
-    request.get(`https://graph.facebook.com/${idFacebookPost}${facebookPostStats}&access_token=${facebook}`, function (error, post, response) {
-        if (error) return console.log(error);
-        console.log(JSON.parse(post.body));
-        return post;
-    });
+async function getInstagramPost(idInstagramPost) {
+    let res = await FB.api(idInstagramPost, 'GET', { fields: instagramPostStats, "access_token": facebook });
+    return res;
 }
 
-function getFacebookPage() {
-    const idFacebookPage = '100545269503535';
 
-    request.get(`https://graph.facebook.com/${idFacebookPage}/${facebookPageStats}?access_token=${facebook}`, function (error, page, response) {
-        if (error) return console.log(error);
-        console.log(JSON.parse(page.body));
-        return page;
-    });
+async function getInstagramPage() {
+    let res = await FB.api(instagramPageId, 'GET', { "fields": instagramPageStats, "access_token": facebook });
+    return res;
 }
