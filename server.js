@@ -1,90 +1,35 @@
-//
-//
-// --------------------------------------------
-// Import
-// --------------------------------------------
-//
-//
-
 const express = require('express');
 const cors = require('cors');
-
-var path = require('path');
+const path = require('path');
 global.appRoot = path.resolve(__dirname);
 const authentificationController = require(`${appRoot}/src/controllers/authentification.controller`);
 
-//
-//
-// --------------------------------------------
-// Require
-// --------------------------------------------
-//
-//
-
-// require(`${appRoot}/src/scripts/autoPost`);
-require('./src/config/databases/mongodb.config');
 require('dotenv').config();
+require('./src/config/databases/mongodb.config');
 require('./src/scripts/auto-post');
 
-//
-//
-// --------------------------------------------
-// Variables and Constants
-// --------------------------------------------
-//
-//
-
+// Set host and port
 const host = process.env.SERVER_HOST || 'localhost';
 const port = process.env.SERVER_PORT || 3000;
 
-//
-//
-// --------------------------------------------
-// Express configuration
-// --------------------------------------------
-//
-//
-
+// Create and configure the express app
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-//
-//
-// --------------------------------------------
-// Cors configuration
-// --------------------------------------------
-//
-//
-
 app.use(cors());
 
-//
-//
-// --------------------------------------------
-// Routes controllers
-// --------------------------------------------
-//
-//
-
-const usersRoute = require(`${appRoot}/src/routes/users.route`);
-const authentificationRoute = require(`${appRoot}/src/routes/authentification.route`);
-const postsRoute = require(`${appRoot}/src/routes/posts.route`);
-const statsRoute = require(`${appRoot}/src/routes/stats.route`);
+// Load routes and use authentication middleware
+const usersRoute = require(path.resolve(__dirname, 'src/routes/users.route'));
+const authentificationRoute = require(path.resolve(__dirname, 'src/routes/authentification.route'));
+const postsRoute = require(path.resolve(__dirname, 'src/routes/posts.route'));
+const statsRoute = require(path.resolve(__dirname, 'src/routes/stats.route'));
 
 app.use('/api/users', authentificationController.authRequest, usersRoute);
 app.use('/api/auth', authentificationRoute);
 app.use('/api/posts', authentificationController.authRequest, postsRoute);
 app.use('/api/stats', statsRoute);
 
-//
-//
-// --------------------------------------------
-// Server listening
-// --------------------------------------------
-//
-//
-
+// Start the server
 app.listen(port, host, () => {
 	console.log(`Server running at http://${host}:${port}/`);
 });

@@ -1,23 +1,7 @@
-//
-//
-// --------------------------------------------
-// Import
-// --------------------------------------------
-//
-//
-
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require(`${appRoot}/src/models/mongoDB/users.model`);
 const sendError = require(`${appRoot}/src/scripts/send-error`);
-
-//
-//
-// --------------------------------------------
-// Route controllers
-// --------------------------------------------
-//
-//
 
 /* A function that is called when a user logs in. It checks if the user exists and if the
 password is correct. If it is correct, it creates a token and sends it to the user. */

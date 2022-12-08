@@ -1,31 +1,15 @@
-//
-//
-// --------------------------------------------
-// Import
-// --------------------------------------------
-//
-//
-
 const bcrypt = require('bcrypt');
 const userModel = require(`${appRoot}/src/models/mongoDB/users.model`);
 const sendError = require(`${appRoot}/src/scripts/send-error`);
 const jwt = require('jsonwebtoken');
 
-//
-//
-// --------------------------------------------
-// Route controllers
-// --------------------------------------------
-//
-//
-
 // Get all users
-exports.getAll = async (_req, res) => {
+exports.getAll = async (req, res) => {
 	try {
 		const users = await userModel.model.find();
-		return res.status(200).json(users);
+		res.status(200).json(users);
 	} catch (err) {
-		return sendError(_req, res, 500, err.message);
+		sendError(req, res, 500, err.message);
 	}
 };
 
@@ -33,20 +17,20 @@ exports.getAll = async (_req, res) => {
 exports.getById = async (req, res) => {
 	try {
 		const user = await userModel.model.findById(req.params.id);
-		return res.json(user);
+		res.json(user);
 	} catch (err) {
-		return sendError(req, res, 500, err.message);
+		sendError(req, res, 500, err.message);
 	}
 };
 
 exports.getByIdInJwtToken = async (req, res, next) => {
 	try {
-		const token = req.headers['authorization'].split(' ')[1];
+		const token = req.headers.authorization.split(' ')[1];
 		const userId = jwt.decode(token).id;
 		const user = await userModel.model.findById(userId);
-		return res.json(user);
+		res.json(user);
 	} catch (err) {
-		return sendError(req, res, 500, err.message);
+		sendError(req, res, 500, err.message);
 	}
 };
 
@@ -59,9 +43,9 @@ exports.create = async (req, res) => {
 
 	try {
 		const newUser = await user.save();
-		return res.status(201).json(newUser);
+		res.status(201).json(newUser);
 	} catch (err) {
-		return sendError(req, res, 400, err.message);
+		sendError(req, res, 400, err.message);
 	}
 };
 
@@ -75,18 +59,18 @@ exports.update = async (req, res) => {
 		if (req.body.password != null) user.password = await bcrypt.hash(req.body.password, 10);
 
 		const updatedUser = await user.save();
-		return res.json(updatedUser);
+		res.json(updatedUser);
 	} catch (err) {
-		return sendError(req, res, 400, err.message);
+		sendError(req, res, 400, err.message);
 	}
 };
 
 // Delete a user with id
-exports.delete = async (req, res) => {
+exports.deleteD = async (req, res) => {
 	try {
 		await userModel.model.findByIdAndDelete(req.params.id);
-		return res.json({ message: 'User deleted' });
+		res.json({ message: 'User deleted' });
 	} catch (err) {
-		return sendError(req, res, 500, err.message);
+		sendError(req, res, 500, err.message);
 	}
 };

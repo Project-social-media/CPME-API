@@ -1,21 +1,5 @@
-//
-//
-// --------------------------------------------
-// Import
-// --------------------------------------------
-//
-//
-
 const archiveModel = require(`${appRoot}/src/models/mongoDB/archives.model`);
 const sendError = require(`${appRoot}/src/scripts/send-error`);
-
-//
-//
-// --------------------------------------------
-// Route controllers
-// --------------------------------------------
-//
-//
 
 // Get all post
 exports.getAll = async (_req, res) => {

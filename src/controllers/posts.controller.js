@@ -1,21 +1,6 @@
-//
-//
-// --------------------------------------------
-// Import
-// --------------------------------------------
-//
-//
-
 const postModel = require(`${appRoot}/src/models/mongoDB/posts.model`);
 const sendError = require(`${appRoot}/src/scripts/send-error`);
 
-//
-//
-// --------------------------------------------
-// Route controllers
-// --------------------------------------------
-//
-//
 
 // Get all post
 exports.getAll = async (_req, res) => {

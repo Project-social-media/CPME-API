@@ -1,22 +1,6 @@
-//
-//
-// --------------------------------------------
-// Require
-// --------------------------------------------
-//
-//
+const mongoose = require('mongoose');
 
-const mongoDb = require(`${appRoot}/src/config/databases/mongodb.config`);
-
-//
-//
-// --------------------------------------------
-// Model
-// --------------------------------------------
-//
-//
-
-var userSchema = new mongoDb.mongoose.Schema({
+const userSchema = new mongoose.Schema({
 	username: {
 		type: String,
 		required: true,
@@ -28,14 +12,6 @@ var userSchema = new mongoDb.mongoose.Schema({
 	},
 });
 
-var model = mongoDb.mongoose.model('users', userSchema);
-
-//
-//
-// --------------------------------------------
-// Export
-// --------------------------------------------
-//
-//
+const model = mongoose.model('users', userSchema);
 
 module.exports = { model };

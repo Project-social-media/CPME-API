@@ -1,39 +1,12 @@
-//
-//
-// --------------------------------------------
-// Require
-// --------------------------------------------
-//
-//
+const router = require('express').Router();
+const { getAll, getById, getByIdInJwtToken, create, update, deleteD } = require(`${appRoot}/src/controllers/users.controller`);
 
-const express = require('express');
-const router = express.Router();
-const usersController = require(`${appRoot}/src/controllers/users.controller`);
-
-//
-//
-// --------------------------------------------
-// Routes
-// --------------------------------------------
-//
-//
-
-// Retrieve all users
-router.get('/', usersController.getAll);
-
-// Retrieve a single user with id
-router.get('/id/:id', usersController.getById);
-
-// Get user from jwt token
-router.get('/getByIdInJwtToken', usersController.getByIdInJwtToken);
-
-// Create a new user
-router.post('/create', usersController.create);
-
-// Update a user with id
-router.put('/update/:id', usersController.update);
-
-// Delete a user with id
-router.delete('/delete/:id', usersController.delete);
+router
+    .get('/', getAll)
+    .get('/:id', getById)
+    .get('/me', getByIdInJwtToken)
+    .post('/', create)
+    .put('/:id', update)
+    .delete('/:id', deleteD);
 
 module.exports = router;

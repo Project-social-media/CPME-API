@@ -1,14 +1,5 @@
-//
-//
-// --------------------------------------------
-// Import
-// --------------------------------------------
-//
-//
-
 const Twitter = require('twitter');
 const FB = require('fb');
-
 const sendError = require(`${appRoot}/src/scripts/send-error`);
 
 const client = new Twitter({
@@ -26,22 +17,14 @@ const instagramPageId = "17841455333376057";
 const instagramPostStats = "caption,comments_count,like_count,media_type,permalink,timestamp,username";
 const instagramPageStats = "business_discovery.username(bluebottle){followers_count,media_count}";
 
-//
-//
-// --------------------------------------------
 // Twitter controllers
-// --------------------------------------------
-//
-//
-
 exports.getTweetStats = async (req, res) => {
     try {
         const tweetData = await getTweet(req.params.id_tweet);
         if (!tweetData) return res.status(404).json({ message: "Tweet not found" });
-        return res.status(200).json(tweetData);
-
+        res.status(200).json(tweetData);
     } catch (err) {
-        return sendError(req, res, 500, err.message);
+        sendError(req, res, 500, err.message);
     }
 }
 
@@ -49,10 +32,9 @@ exports.getTwittosStats = async (req, res) => {
     try {
         const twittosData = await getTwittos(req.params.id_user);
         if (!twittosData) return res.status(404).json({ message: "Twittos not found" });
-        return res.status(200).json(twittosData);
-
+        res.status(200).json(twittosData);
     } catch (err) {
-        return sendError(req, res, 500, err.message);
+        sendError(req, res, 500, err.message);
     }
 }
 
@@ -61,28 +43,19 @@ async function getTweet(idTweet) {
     return res;
 }
 
-
 async function getTwittos(idUser) {
     let res = await client.get(`statuses/user_timeline/${idUser}.json`, {});
     return res;
 }
 
-//
-//
-// --------------------------------------------
 // Facebook controllers
-// --------------------------------------------
-//
-//
-
 exports.getFacebookPostStats = async (req, res) => {
     try {
         const postStats = await getFacebookPost(req.params.id_post);
         if (!postStats) return res.status(404).json({ message: "Post not found" });
-        return res.status(200).json(postStats);
-
+        res.status(200).json(postStats);
     } catch (err) {
-        return sendError(req, res, 500, err.message);
+        sendError(req, res, 500, err.message);
     }
 }
 
@@ -90,10 +63,9 @@ exports.getFacebookPageStats = async (req, res) => {
     try {
         const pageStats = await getFacebookPage();
         if (!pageStats) return res.status(404).json({ message: "Page not found" });
-        return res.status(200).json(pageStats);
-
+        res.status(200).json(pageStats);
     } catch (err) {
-        return sendError(req, res, 500, err.message);
+        sendError(req, res, 500, err.message);
     }
 }
 
@@ -106,22 +78,14 @@ async function getFacebookPage() {
     let res = await FB.api(facebookPageStats, 'GET', { "access_token": facebook });
     return res;
 }
-//
-//
-// --------------------------------------------
 // Instagram controllers
-// --------------------------------------------
-//
-//
-
 exports.getInstagramPostStats = async (req, res) => {
     try {
         const postStats = await getInstagramPost(req.params.id_post);
         if (!postStats) return res.status(404).json({ message: "Post not found" });
-        return res.status(200).json(postStats);
-
+        res.status(200).json(postStats);
     } catch (err) {
-        return sendError(req, res, 500, err.message);
+        sendError(req, res, 500, err.message);
     }
 }
 
@@ -129,13 +93,11 @@ exports.getInstagramPageStats = async (req, res) => {
     try {
         const pageStats = await getInstagramPage();
         if (!pageStats) return res.status(404).json({ message: "Page not found" });
-        return res.status(200).json(pageStats);
-
+        res.status(200).json(pageStats);
     } catch (err) {
-        return sendError(req, res, 500, err.message);
+        sendError(req, res, 500, err.message);
     }
 }
-
 
 async function getInstagramPost(idInstagramPost) {
     let res = await FB.api(idInstagramPost, 'GET', { fields: instagramPostStats, "access_token": facebook });
@@ -144,6 +106,6 @@ async function getInstagramPost(idInstagramPost) {
 
 
 async function getInstagramPage() {
-    let res = await FB.api(instagramPageId, 'GET', { "fields": instagramPageStats, "access_token": facebook });
+    let res = await FB.api(instagramPageId, 'GET', { fields: instagramPageStats, "access_token": facebook });
     return res;
 }

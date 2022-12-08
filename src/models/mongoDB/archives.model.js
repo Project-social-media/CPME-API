@@ -1,22 +1,8 @@
-//
-//
-// --------------------------------------------
-// Require
-// --------------------------------------------
-//
-//
+// Require MongoDB config
+const { mongoose } = require(`${appRoot}/src/config/databases/mongodb.config`);
 
-const mongoDb = require(`${appRoot}/src/config/databases/mongodb.config`);
-
-//
-//
-// --------------------------------------------
-// Model
-// --------------------------------------------
-//
-//
-
-var archiveSchema = new mongoDb.mongoose.Schema({
+// Define archive schema
+const archiveSchema = new mongoose.Schema({
 	message: {
 		type: String,
 		required: true,
@@ -48,14 +34,8 @@ var archiveSchema = new mongoDb.mongoose.Schema({
 	},
 });
 
-var model = mongoDb.mongoose.model('archives', archiveSchema);
+// Create model
+const model = mongoose.model('archives', archiveSchema);
 
-//
-//
-// --------------------------------------------
-// Export
-// --------------------------------------------
-//
-//
-
+// Export model
 module.exports = { model };
