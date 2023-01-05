@@ -37,6 +37,7 @@ exports.getByIdInJwtToken = async (req, res, next) => {
 // Create a new user
 exports.create = async (req, res) => {
 	const user = new userModel.model({
+		email: req.body.email,
 		username: req.body.username,
 		password: await bcrypt.hash(req.body.password, 10),
 	});
@@ -52,11 +53,17 @@ exports.create = async (req, res) => {
 // Update a user with id
 exports.update = async (req, res) => {
 	try {
-		const user = await userModel.model.findById(req.params.id);
+		const user = await userModel.model.findOne({ email: req.params.email });
 
-		if (req.body.username != null) user.username = req.body.username;
-
-		if (req.body.password != null) user.password = await bcrypt.hash(req.body.password, 10);
+		if (req.body.email) {
+			user.email = req.body.email;
+		}
+		if (req.body.username) {
+			user.username = req.body.username;
+		}
+		if (req.body.password) {
+			user.password = await bcrypt.hash(req.body.password, 10);
+		}
 
 		const updatedUser = await user.save();
 		res.json(updatedUser);
@@ -64,6 +71,7 @@ exports.update = async (req, res) => {
 		sendError(req, res, 400, err.message);
 	}
 };
+
 
 // Delete a user with id
 exports.deleteD = async (req, res) => {
