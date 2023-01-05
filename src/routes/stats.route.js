@@ -3,7 +3,7 @@ const router = express.Router();
 const statsController = require(`${appRoot}/src/controllers/stats.controller`);
 
 router
-    .get('/twitter/user', statsController.getTwittosStats)
+    .get('/twitter/user/:id_user', statsController.getTwittosStats)
     .get('/twitter/tweet', statsController.getTweetStats)
     .get('/facebook/post', statsController.getFacebookPostStats)
     .get('/facebook/page', statsController.getFacebookPageStats)

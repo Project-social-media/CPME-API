@@ -24,7 +24,7 @@ const authentificationRoute = require(path.resolve(__dirname, 'src/routes/authen
 const postsRoute = require(path.resolve(__dirname, 'src/routes/posts.route'));
 const statsRoute = require(path.resolve(__dirname, 'src/routes/stats.route'));
 
-app.use('/api/users', authentificationController.authRequest, usersRoute);
+app.use('/api/users', usersRoute);
 app.use('/api/auth', authentificationRoute);
 app.use('/api/posts', authentificationController.authRequest, postsRoute);
 app.use('/api/stats', statsRoute);
