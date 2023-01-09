@@ -1,14 +1,15 @@
-const { getByUsername } = require('../controllers/users.controller');
+const { authRequest } = require('../controllers/authentification.controller');
 
 const router = require('express').Router();
-const { getAll, getById, getByIdInJwtToken, create, update, deleteD } = require(`${appRoot}/src/controllers/users.controller`);
+const { getAll, getById, getByMail, getByIdInJwtToken, create, update, deleteD } = require(`${appRoot}/src/controllers/users.controller`);
 
 router
-    .get('/all', getAll)
-    .get('/id/:id', getById)
-    .get('/me', getByIdInJwtToken)
-    .post('/create', create)
+    .get('/all', authRequest, getAll)
+    .get('/id/:id', authRequest, getById)
+    .get('/email/:email', authRequest, getByMail)
+    .get('/me', authRequest, getByIdInJwtToken)
+    .post('/create', authRequest, create)
     .put('/update/:email', update)
-    .delete('/delete/:id', deleteD);
+    .delete('/delete/:id', authRequest, deleteD);
 
 module.exports = router;

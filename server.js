@@ -28,7 +28,7 @@ const archivesRoute = require(path.resolve(__dirname, 'src/routes/archives.route
 app.use('/api/users', usersRoute);
 app.use('/api/auth', authentificationRoute);
 app.use('/api/posts', postsRoute);
-app.use('/api/stats', statsRoute);
+app.use('/api/stats', authentificationController.authRequest, statsRoute);
 app.use('/api/archives', archivesRoute)
 
 // Start the server

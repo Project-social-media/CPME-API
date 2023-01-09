@@ -15,8 +15,9 @@ exports.login = async (req, res) => {
 		try {
 			if (!result) return sendError(req, res, 400, 'Wrong username or password');
 
-			const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-			return res.json({ accessToken: accessToken });
+			const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '90d' });
+			res.append("authorization", accessToken);
+			return res.json(user);
 		} catch (err) {
 			return sendError(req, res, 500, err.message);
 		}
@@ -29,7 +30,9 @@ exports.login = async (req, res) => {
 exports.authRequest = async (req, res, next) => {
 	try {
 		const authHeader = req.headers['authorization'];
+		console.log(authHeader);
 		const token = authHeader && authHeader.split(' ')[1];
+		console.log(token);
 
 		if (token == null) return sendError(req, res, 401, 'No token provided');
 

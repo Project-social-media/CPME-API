@@ -10,6 +10,38 @@ const facebook = process.env.FACEBOOK_TOKEN;
 
 
 
+exports.getFacebookPageStats = async (req, res) => {
+    try {
+        const facebookPageStats = await getFacebookPageStats();
+        if (!facebookPageStats) return res.status(404).json({ message: "Facebook page stats not found" });
+        res.status(200).json(facebookPageStats);
+    } catch (err) {
+        sendError(req, res, 500, err);
+    }
+}
+
+let since = Math.round(Date.now() / 1000) - 30 * 24 * 3600; // 30 days in seconds
+
+
+async function getFacebookPageStats() {
+    // Assume that `facebook` has been correctly initialized with a valid access token
+    let url = `https://graph.facebook.com/100545269503535/posts?since=${since}&access_token=${facebook}`;
+    let response = await fetch(url);
+    let data = await response.json();
+    let posts = data.data;
+
+    let reactionsCount = 0;
+    for (let post of posts) {
+        let postUrl = `https://graph.facebook.com/${post.id}/reactions?summary=true&access_token=${facebook}`;
+        let postResponse = await fetch(postUrl);
+        let postData = await postResponse.json();
+        reactionsCount += postData.summary.total_count;
+    }
+
+    return { reactionsCount };
+}
+
+
 
 
 
@@ -64,6 +96,7 @@ async function getTwitterUserStats() {
     let viewsCount = 0;
     let sharesCount = 0;
     let followersCount = 0;
+    let quotesCount = 0;
     let startDateMilliseconds = Date.parse(startDate);
     let endDateMilliseconds = Date.parse(endDate);
 
@@ -81,36 +114,4 @@ async function getTwitterUserStats() {
     });
 
     return { likesCount, viewsCount, sharesCount, followersCount };
-}
-
-
-exports.getFacebookPageStats = async (req, res) => {
-    try {
-        const facebookPageStats = await getFacebookPageStats();
-        if (!facebookPageStats) return res.status(404).json({ message: "Facebook page stats not found" });
-        res.status(200).json(facebookPageStats);
-    } catch (err) {
-        sendError(req, res, 500, err);
-    }
-}
-
-let since = Math.round(Date.now() / 1000) - 30 * 24 * 3600; // 30 days in seconds
-
-
-async function getFacebookPageStats() {
-    // Assume that `facebook` has been correctly initialized with a valid access token
-    let url = `https://graph.facebook.com/100545269503535/posts?since=${since}&access_token=${facebook}`;
-    let response = await fetch(url);
-    let data = await response.json();
-    let posts = data.data;
-
-    let reactionsCount = 0;
-    for (let post of posts) {
-        let postUrl = `https://graph.facebook.com/${post.id}/reactions?summary=true&access_token=${facebook}`;
-        let postResponse = await fetch(postUrl);
-        let postData = await postResponse.json();
-        reactionsCount += postData.summary.total_count;
-    }
-
-    return { reactionsCount };
 }

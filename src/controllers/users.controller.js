@@ -23,12 +23,22 @@ exports.getById = async (req, res) => {
 	}
 };
 
+exports.getByMail = async (req, res) => {
+	try {
+		const user = await userModel.model.findOne({ email: req.params.email });
+		res.json(user);
+	} catch (err) {
+		sendError(req, res, 500, err.message);
+	}
+};
+
 exports.getByIdInJwtToken = async (req, res, next) => {
 	try {
 		const token = req.headers.authorization.split(' ')[1];
 		const userId = jwt.decode(token).id;
 		const user = await userModel.model.findById(userId);
-		res.json(user);
+
+		res.status(200).json(user);
 	} catch (err) {
 		sendError(req, res, 500, err.message);
 	}
@@ -52,23 +62,28 @@ exports.create = async (req, res) => {
 
 // Update a user with id
 exports.update = async (req, res) => {
-	try {
-		const user = await userModel.model.findOne({ email: req.params.email });
+	const user = await userModel.model.findOne({ email: req.params.email });
 
-		if (req.body.email) {
-			user.email = req.body.email;
-		}
-		if (req.body.username) {
-			user.username = req.body.username;
-		}
-		if (req.body.password) {
-			user.password = await bcrypt.hash(req.body.password, 10);
-		}
+	if (user == null) {
+		res.status(404).send("User not found");
+	} else {
+		try {
 
-		const updatedUser = await user.save();
-		res.json(updatedUser);
-	} catch (err) {
-		sendError(req, res, 400, err.message);
+			if (req.body.email) {
+				user.email = req.body.email;
+			}
+			if (req.body.username) {
+				user.username = req.body.username;
+			}
+			if (req.body.password) {
+				user.password = await bcrypt.hash(req.body.password, 10);
+			}
+
+			const updatedUser = await user.save();
+			res.json(updatedUser);
+		} catch (err) {
+			sendError(req, res, 400, err.message);
+		}
 	}
 };
 
