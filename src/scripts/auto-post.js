@@ -25,8 +25,6 @@ require('dotenv').config();
 checkInterval = process.env.CHECK_INTERVAL || 5;
 
 setInterval(() => {
-	console.log('Checking posts...');
-
 	post.model.find({}, (err, data) => {
 		if (err) return console.log(err);
 

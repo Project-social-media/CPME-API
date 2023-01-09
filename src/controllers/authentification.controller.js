@@ -3,36 +3,28 @@ const jwt = require('jsonwebtoken');
 const userModel = require(`${appRoot}/src/models/mongoDB/users.model`);
 const sendError = require(`${appRoot}/src/scripts/send-error`);
 
-/* A function that is called when a user logs in. It checks if the user exists and if the
-password is correct. If it is correct, it creates a token and sends it to the user. */
+/* A function that logs in a user. */
 exports.login = async (req, res) => {
 	try {
 		const user = await userModel.model.findOne({ username: req.body.username });
 
-		if (user == null) return sendError(req, res, 400, 'Wrong username or password');
-		const result = await bcrypt.compare(req.body.password, user.password);
+		if (!user) return sendError(req, res, 400, 'Wrong username or password');
+		if (!(await bcrypt.compare(req.body.password, user.password))) return sendError(req, res, 400, 'Wrong username or password');
 
-		try {
-			if (!result) return sendError(req, res, 400, 'Wrong username or password');
-
-			const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '90d' });
-			res.append("authorization", accessToken);
-			return res.json(user);
-		} catch (err) {
-			return sendError(req, res, 500, err.message);
-		}
+		const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '90d' });
+		res.append("authorization", accessToken);
+		return res.json({ 'accessToken': accessToken, 'username': user.username, 'id': user._id, 'email': user.email });
 	} catch (err) {
 		return sendError(req, res, 500, err.message);
 	}
 };
 
+
 /* A middleware function that checks if the user is logged in. */
 exports.authRequest = async (req, res, next) => {
 	try {
 		const authHeader = req.headers['authorization'];
-		console.log(authHeader);
 		const token = authHeader && authHeader.split(' ')[1];
-		console.log(token);
 
 		if (token == null) return sendError(req, res, 401, 'No token provided');
 

@@ -19,17 +19,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Load routes and use authentication middleware
-const usersRoute = require(path.resolve(__dirname, 'src/routes/users.route'));
-const authentificationRoute = require(path.resolve(__dirname, 'src/routes/authentification.route'));
-const postsRoute = require(path.resolve(__dirname, 'src/routes/posts.route'));
-const statsRoute = require(path.resolve(__dirname, 'src/routes/stats.route'));
-const archivesRoute = require(path.resolve(__dirname, 'src/routes/archives.route'));
+const usersRoute = require(`${appRoot}/src/routes/users.route`);
+const authentificationRoute = require(`${appRoot}/src/routes/authentification.route`);
+const postsRoute = require(`${appRoot}/src/routes/posts.route`);
+const statsRoute = require(`${appRoot}/src/routes/stats.route`);
+const archivesRoute = require(`${appRoot}/src/routes/archives.route`);
 
-app.use('/api/users', usersRoute);
-app.use('/api/auth', authentificationRoute);
-app.use('/api/posts', postsRoute);
-app.use('/api/stats', authentificationController.authRequest, statsRoute);
-app.use('/api/archives', archivesRoute)
+app
+	.use('/api/users', usersRoute)
+	.use('/api/auth', authentificationRoute)
+	.use('/api/posts', postsRoute)
+	.use('/api/stats', authentificationController.authRequest, statsRoute)
+	.use('/api/archives', archivesRoute);
+
 
 // Start the server
 app.listen(port, host, () => {
