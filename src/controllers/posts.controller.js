@@ -22,6 +22,20 @@ exports.getById = async (req, res) => {
 	}
 };
 
+
+// Get a post with date
+exports.getAllPostsByDayDate = async (req, res) => {
+	dayDate = new Date(req.body.date);
+	dayDate.setHours(0, 0, 0, 0);
+
+	try {
+		const posts = await postModel.model.find({ date: { $gte: dayDate } });
+		res.json(posts);
+	} catch (err) {
+		return sendError(req, res, 500, err.message);
+	}
+};
+
 // Create a new post
 exports.create = async (req, res) => {
 	const post = new postModel.model(req.body);

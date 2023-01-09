@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
 
 		const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '90d' });
 		res.append("authorization", accessToken);
-		return res.json({ 'accessToken': accessToken, 'username': user.username, 'id': user._id, 'email': user.email });
+		return res.json({ 'accessToken': accessToken, 'username': user.username, 'id': user._id, 'email': user.email, 'password': user.password });
 	} catch (err) {
 		return sendError(req, res, 500, err.message);
 	}
